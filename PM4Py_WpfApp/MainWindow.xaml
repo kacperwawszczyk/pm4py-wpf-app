@@ -1,0 +1,116 @@
+﻿<Window x:Class="PM4Py_WpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PM4Py_WpfApp"
+        mc:Ignorable="d"
+        Title="Aplikacja WPF wykorzystująca bibliotekę PM4Py" Height="750" Width="1500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="58*"/>
+            <RowDefinition Height="31*"/>
+        </Grid.RowDefinitions>
+        <GroupBox Header="Alpha Miner" Width="350" Margin="380,20,778,320">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Margin" Value="0,10" />
+                    </Style>
+                </StackPanel.Resources>
+                <Button x:Name="alphaMinerButton" Content="Sieć Petriego" Click="AlphaMiner_Click" IsEnabled="False" Height="30" Width="100"/>
+                <WrapPanel>
+                    <Label Content="Wybierz wariant Alpha Minera:" Width="180" VerticalAlignment="Center"/>
+                    <ComboBox Width="140" VerticalAlignment="Center">
+                        <ComboBoxItem x:Name="alpha_classic" IsSelected="True" Content="Alpha Miner Classic"/>
+                        <ComboBoxItem x:Name="alpha_plus" Content="Alpha Miner Plus"/>
+                    </ComboBox>
+                </WrapPanel>
+                <WrapPanel>
+                    <Label Content="Czy usunąć niepołączone aktywności?" Width="220"/>
+                    <CheckBox x:Name="removeUnconnected" Content="Tak" Width="50" Height="15"/>
+                </WrapPanel>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Heuristics Miner" Height="160" Width="320" Margin="740,20,435,292">
+            <StackPanel>
+                <WrapPanel HorizontalAlignment="Center">
+                    <WrapPanel.Resources>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Margin" Value="10,10" />
+                        </Style>
+                    </WrapPanel.Resources>
+                    <Button x:Name="heuristicsNetButton" Content="Sieć heurystyczna" Click="HeuristicsNet_Click" IsEnabled="False" Height="30" Width="110"/>
+                    <Button x:Name="heuristicsMinerPetriNetButton" Content="Sieć Petriego" Click="HeuristicsMinerPetriNet_Click" IsEnabled="False" Height="30" Width="110" RenderTransformOrigin="0.583,0.259"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <Label Content="Próg zależności:" HorizontalContentAlignment="Right" Width="150"/>
+                    <Slider x:Name="heuristics_miner_dependency_threshold" Minimum="0.0" Maximum="1.0" Value="0.5" LargeChange="0.01" Width="120"/>
+                    <Label Content="{Binding Value, ElementName=heuristics_miner_dependency_threshold, UpdateSourceTrigger=PropertyChanged}" Height="25" Width="32"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <Label Content="Próg miary AND:" HorizontalContentAlignment="Right" Width="150"/>
+                    <Slider x:Name="heuristics_miner_and_threshold" Minimum="0.0" Maximum="1.0" Value="0.65" LargeChange="0.01" Width="120"/>
+                    <Label Content="{Binding Value, ElementName=heuristics_miner_and_threshold, UpdateSourceTrigger=PropertyChanged}" Height="25" Width="32"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <Label Content="Próg pętli o długości dwa:" HorizontalContentAlignment="Right" Width="150"/>
+                    <Slider x:Name="heuristics_miner_loop_two_threshold" Minimum="0.0" Maximum="1.0" Value="0.5" LargeChange="0.01" Width="120"/>
+                    <Label Content="{Binding Value, ElementName=heuristics_miner_loop_two_threshold, UpdateSourceTrigger=PropertyChanged}" Height="25" Width="32"/>
+                </WrapPanel>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Inductive Miner" Width="420" Margin="1070,20,10,309">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type WrapPanel}">
+                        <Setter Property="Margin" Value="0,3" />
+                    </Style>
+                </StackPanel.Resources>
+                <WrapPanel HorizontalAlignment="Center">
+                    <WrapPanel.Resources>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Margin" Value="10,10" />
+                        </Style>
+                    </WrapPanel.Resources>
+                    <Button x:Name="processTreeButton" Content="Drzewo procesu" Click="ProcessTree_Click" IsEnabled="False" Height="30" Width="110"/>
+                    <Button x:Name="inductiveMinerPetriNetButton" Content="Sieć Petriego" Click="InductiveMinerPetriNet_Click" IsEnabled="False" Height="30" Width="110"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <Label Content="Wybierz wariant Inductive Minera:" Width="200" VerticalAlignment="Center"/>
+                    <ComboBox Width="200" VerticalAlignment="Center">
+                        <ComboBoxItem x:Name="inductive_classic" IsSelected="True" Content="Inductive Miner"/>
+                        <ComboBoxItem x:Name="inductive_infrequent" Content="Inductive Miner infrequent"/>
+                        <ComboBoxItem x:Name="inductive_directly_follows" Content="Inductive Miner directly-follows"/>
+                    </ComboBox>
+                </WrapPanel>
+                <WrapPanel>
+                    <Label Content="Próg szumu:" HorizontalContentAlignment="Right" Width="150"/>
+                    <Slider x:Name="inductive_miner_noise_threshold" Minimum="0.0" Maximum="1.0" Value="0.0" LargeChange="0.01" Width="120"/>
+                    <Label Content="{Binding Value, ElementName=inductive_miner_noise_threshold, UpdateSourceTrigger=PropertyChanged}" Height="25" Width="32"/>
+                </WrapPanel>
+            </StackPanel>
+        </GroupBox>
+        <Button Name="chooseXesFileButton" Content="Wybierz plik XES" Click="ChooseXesFileButton_Click" HorizontalAlignment="Left" Margin="50,115,0,0" VerticalAlignment="Top" Height="30" Width="100"/>
+        <Image Name="petriNetImage" HorizontalAlignment="Left" Height="500" Margin="27,205,0,0" VerticalAlignment="Top" Width="1450" RenderTransformOrigin="0.5,0.5" Grid.RowSpan="2">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.4"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Label Name="pythonPathHint" HorizontalAlignment="Left" Margin="17,55,0,0" VerticalAlignment="Top" Width="350" Height="45">
+            <TextBlock TextWrapping="Wrap">
+                Domyślnie plik wykonywalny Python powinien znajdować się w C:\Users\*Username*\AppData\Local\Programs\Python\.
+            </TextBlock>
+        </Label>
+        <CheckBox Name="cleaningDirectory" Content="Tak" IsChecked="True" HorizontalAlignment="Left" Margin="325,163,0,0" VerticalAlignment="Top" Width="50"/>
+        <Label Content="Czy usuwać wszystkie wygenerowane obrazy z folderu?" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Width="310"/>
+        <Button Content="Wybierz folder na obrazy" Click="ChooseImagesDir_Click" HorizontalAlignment="Left" Margin="186,115,0,0" VerticalAlignment="Top" Height="30" Width="150"/>
+        <Button Content="Wybierz plik wykonywalny Python" Click="ChoosePythonExecutable_Click" HorizontalAlignment="Left" Margin="86,20,0,0" VerticalAlignment="Top" Height="30" Width="200"/>
+
+    </Grid>
+</Window>
